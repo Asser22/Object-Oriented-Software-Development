@@ -35,7 +35,10 @@ int main() {
     getName();
 
     char choice = getChoice();
-
+    char ch = newFunct(choice);
+  
+    //handle bad input 
+  
     switch(choice) {
         case '1':
             mathCalculator();
@@ -52,10 +55,7 @@ int main() {
         case '5':
             help();
             break;
-        case '6':
-            quit();
-            break;
-        case 'q':
+      case '6': case 'q':
             quit();
             break;
         case 'Q':
@@ -78,7 +78,11 @@ string getName(){
     string firstName;
     string lastName;
     cout << "Please enter your full name: ";
-    getline (cin,  firstName);
+    getline (cin,  firsntName);
+    cin >> firstName << lname; 
+    
+    fname, lname = solitName(fullName); 
+  
     cout << "Thank you "<< firstName<<" Welcome to our JunkuLator Adventures!!!"<< endl;
 
     return firstName;
