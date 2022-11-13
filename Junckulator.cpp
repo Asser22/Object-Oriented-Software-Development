@@ -3,12 +3,14 @@
 /*The purpose of the program is to implement a general-purpose calculator
   called Junckulator which solves different types of problems.
 */
-
+#include <algorithm> 
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <iomanip>      // std::setprecision
+#include <iomanip> // std::setprecision
 #include <sstream>
+#include <string.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -18,27 +20,335 @@ void printMenu();
 int mathCalculator();
 string gradesCalculator();
 float metricConversion();
-string stringTokenizer();
+void stringTokenizer();
 string help();
 string quit();
-string askString();
-int numberofWords();
-int getNumOfLetters(string text);
-int getNumberOfWords(string text);
-string getReversedText(string text);
-void printCapitalWord(int size, string text);
-void findWord(string text, int size);
-string inputText();
 
-int main() {
 
-    getName();
 
+double validationOnNumbers(double number)
+{
+    cin >> number;
+    //if the user fails to put in a number, ask the user to re-do it
+    while(cin.fail()) {
+        cout << "Error! Please enter a number!" << endl;
+        cin.clear(); //clear the input
+        cin.ignore(256, '\n');
+        cout << "Please Reenter the number: ";
+        cin >> number;
+    }
+    return number;
+}
+
+//boolean funtion to check if the user input is a string or not
+bool validateOperations(const string& userInput)
+{
+    for (const char characters : userInput) {
+        if (userInput == "+" || userInput == "-" || userInput == "*" || userInput == "/" || userInput == "%" || 
+            userInput == "log2" || userInput == "Log2" || userInput == "LOG2" || userInput == "help" || userInput == "Help" ||
+            userInput == "HELP")
+            return true;
+    }
+    return false;
+}
+
+string validateString(string userInput) {
+    getline(cin, userInput);
+    while (validateOperations(userInput) == false)
+    {
+        cout << "Error! Enter the correct choice!\n";
+        cin.clear();
+        cout << "Please enter your choice again: ";
+        getline(cin, userInput);
+    }
+    return userInput;
+}
+
+
+
+string getName(){
+
+    string name;
+
+    cout << "Please enter your full name: ";
+    //getline (cin,  name);
+    cout << "Thank you "<< name<<" Welcome to our JunkuLator Adventures!!!"<< endl;
+    return name;
+}
+
+char getChoice() {
+    char choice;
+    printMenu();
+    cin >> choice;
+    return choice;
+}
+
+//number check function to see if the user puts in the correct number
+double validateUserInput(double num)
+{
+    cin >> num;
+    //if the user fails to put in a number, reask
+    while(cin.fail()) {
+        //print error message
+        cout << "Error! enter a number!" << endl;
+        //clear the input
+        cin.clear();
+        //ignore the newline 
+        cin.ignore(256, '\n');
+        //ask to reenter
+        cout << "Reenter: ";
+        cin >> num;
+    }
+    //return the valid number
+    return num;
+}
+
+void printMenu(){
+    cout << "\n";
+    cout << "Please select from the following menu: \n";
+    cout << "   1. Math Calculator\n" ;
+    cout << "   2. Metric Conversion Calculator\n";
+    cout << "   3. Grades Calculator \n";
+    cout << "   4. String Tokenizer\n";
+    cout << "   5. Help (display help message/s)\n";
+    cout << "   6. Quit (terminates the program)\n";
+    cout << "Enter your choice and press return: ";
+}
+
+//*********************Math Calculator*********************//
+int mathCalculator() {
+    int firstOperand;
+    int secondOperand;
+    int result;
+    cout << "\n";
+    cout << "Please enter operation (+, - , *, /, %, Log2(n), Help): ";
+    string choice;
+    cin >> choice;
+    choice = validateString(choice);
+
+    if (choice == "+") {
+        cout << "Enter your first Operand: ";
+        cin >> firstOperand;
+        firstOperand = validationOnNumbers(firstOperand);
+        cout << "Enter your second Operand: ";
+        cin >> secondOperand;
+        secondOperand = validationOnNumbers(secondOperand);
+        result = firstOperand + secondOperand;
+        cout << firstOperand << " " << "+" << " " << secondOperand  << " " << "="   << " "<< result;
+        return result;
+
+    } else if (choice == "-") {
+        cout << "Enter your first Operand: ";
+        cin >> firstOperand;
+        firstOperand = validationOnNumbers(firstOperand);
+        cout << "Enter your second Operand: ";
+        cin >> secondOperand;
+        secondOperand = validationOnNumbers(secondOperand);
+        result = firstOperand - secondOperand;
+        cout << firstOperand << " " << "-" << " " << secondOperand  << " " << "="   << " "<< result;
+        return result;
+
+    } else if (choice == "*") {
+        cout << "Enter your first Operand: ";
+        cin >> firstOperand;
+        firstOperand = validationOnNumbers(firstOperand);
+        cout << "Enter your second Operand: ";
+        cin >> secondOperand;
+        secondOperand = validationOnNumbers(secondOperand);
+        result = firstOperand * secondOperand;
+        cout << firstOperand << " " << "*" << " " << secondOperand  << " " << "="   << " "<< result;
+        return result;
+
+    } else if (choice == "/") {
+        cout << "Enter your first Operand: ";
+        cin >> firstOperand;
+        firstOperand = validationOnNumbers(firstOperand);
+        cout << "Enter your second Operand: ";
+        cin >> secondOperand;
+        secondOperand = validationOnNumbers(secondOperand);
+        result = firstOperand / secondOperand;
+        cout << firstOperand << " " << "/" << " " << secondOperand  << " " << "="   << " "<< result;
+        return result;
+
+    } else if (choice == "%") {
+        cout << "Enter your first Operand: ";
+        cin >> firstOperand;
+        firstOperand = validationOnNumbers(firstOperand);
+        cout << "Enter your second Operand: ";
+        cin >> secondOperand;
+        secondOperand = validationOnNumbers(secondOperand);
+        result = firstOperand % secondOperand;
+        cout << firstOperand % 10 << " " << "%" << " " << secondOperand  << " " << "="   << " "<< result;
+        return result;
+
+    } else if (choice == "log2") {
+        cout << "Enter your first Operand: ";
+        float firstOperand;
+        cin >> firstOperand;
+        firstOperand = validationOnNumbers(firstOperand);
+        result = log2(firstOperand);
+        cout << "log2(" << firstOperand << ") = " << result << endl;
+
+
+    } else if (choice == "Help") {
+        cout << "You should one of these operand (+, - , *, /, %, Log2(n)) ";
+        mathCalculator();
+
+    } else {
+        cout << "ERROR! Try another operand!\n";
+        mathCalculator();
+    }
+    return result;
+}
+
+
+
+/**********************String Tokenizer*********************
+Read a full line of text from the user and analyze it.
+b. Print the total number of letters in the line.
+c. Print the total number of words in the line.
+d. Print the line backwards.
+e. Print all words that starts with capital letter.
+f. Search for a word in the line.
+Ask user to enter a word and display Found if found and Not Found otherwise
+ */
+
+void numberOfLetter(string userInput){
+    int lettersNumber = userInput.length();//using .length() to find the total number of letters
+    cout << "\nThe total number of letters in the line is: " << lettersNumber << endl;
+}
+
+void numberOfWords(string userInput){
+    int words = 0;
+    //using for loop to go through each word and if there is a space, add 1 to the words variable to count number of words
+    for (int i = 0; i < userInput.size(); i++) {
+        if(userInput[i] == ' ')
+            words++;
+    }
+    ++words;//final incrementation to count for the last word
+    cout << "\nThe total number of words in this line is: " << words << endl;
+}
+
+void printReverse(string userInput){
+    reverse(userInput.begin(), userInput.end());//reverse() function reverse the string
+    cout << "\nThe reverse of the line is: " << userInput;
+}
+
+
+void printCapitalLetters(string userInput){
+    int totalLetters = userInput.length();//getting total number of letters
+    cout << endl;
+    for (int i = 0; i < totalLetters; i++) {//go through each letters of the string
+        if(isupper(userInput[i])) {//if there is a capital letter print it out
+            cout << "\nThe Capital Letters Are: " << userInput[i];
+        }
+    }
+}
+
+bool isWordFound(string sentence, string word){
+    string temp;
+    stringstream string(sentence);//using stringstream to split the sentence
+    while(string >> temp) {//compare the letters
+        if (temp.compare(word) == 0) {//if same letters return true
+            return true;
+        }
+    }
+    return false;
+}
+
+void lookUpWord(string userInput)
+{
+    cout << "Enter a word you want to search for: ";
+    string userWord;
+    getline(cin, userWord);
+    if (isWordFound(userInput, userWord))
+        cout << "The word \"" << userWord << "\" is found in the sentence";
+    else
+        cout << "The word \"" << userWord << "\" is not found in the sentence";
+
+}
+
+void stringTokenizer()
+{
+    int userOption;
+    string userInput;
+
+    cout << "\nString Tokenizer\n"
+            "   1. Read a full line of text from the user and analyze it.\n"
+            "   2. Print the total number of letters in the line.\n"
+            "   3. Print the total number of words in the line.\n"
+            "   4. Print the line backwards.\n"
+            "   5. Print all words that starts wtih capital letter.\n"
+            "   6. Search for a word in line.\n";
+    cout << "\nEnter your choice and press return: ";
+    cin >> userOption;
+
+    //using while loop to make sure the user puts in the correct data
+    while (true) {
+        if (userOption == 1) {
+            cout << "Please enter a sentence: ";
+            cin.ignore();
+            getline(cin, userInput);
+            numberOfLetter(userInput);
+            numberOfWords(userInput);
+            printReverse(userInput);
+            printCapitalLetters(userInput);
+            break;
+        }
+        else if (userOption == 2) {
+            cout << "Please enter a sentence: ";
+            cin.ignore();
+            getline(cin, userInput);
+            numberOfWords(userInput);
+            break;
+        }
+        else if (userOption == 3) {
+            cout << "Please enter a sentence: ";
+            cin.ignore();
+            getline(cin, userInput);
+            numberOfWords(userInput);
+            break;
+        }
+        else if (userOption == 4) {
+            cout << "Please enter a sentence: ";
+            cin.ignore();
+            getline(cin, userInput);
+            printReverse(userInput);
+            break;
+        }
+        else if (userOption == 5) {
+            cout << "Please enter a sentence: ";
+            cin.ignore();
+            getline(cin, userInput);
+            printCapitalLetters(userInput);
+            break;
+        }
+        else if (userOption == 6) {
+            cout << "Please enter a sentence: ";
+            cin.ignore();
+            getline(cin, userInput);
+            lookUpWord(userInput);
+            break;
+        }
+        else {
+            cout << "INVALID INPUT!\n";
+            cout << "Please input a valid option\n"
+                    "Enter your choice from (1-6) and press return: ";
+            cin >> userOption;
+        }
+    }
+}
+
+//*********************Help*********************//
+string help(){
+
+    cout << "You have to chose any option from 1-6\n";
+    cout << "The first option is a math calculator\n";
+    cout << "The second option is a metric conversion\n";
+    cout << "The third option is a grade calculator\n";
+    cout << "The fourth option is a string tokenizer\n";
+    cout << "The sixth option is to quit the program\n";
     char choice = getChoice();
-    char ch = newFunct(choice);
-  
-    //handle bad input 
-  
     switch(choice) {
         case '1':
             mathCalculator();
@@ -55,7 +365,10 @@ int main() {
         case '5':
             help();
             break;
-      case '6': case 'q':
+        case '6':
+            quit();
+            break;
+        case 'q':
             quit();
             break;
         case 'Q':
@@ -70,140 +383,117 @@ int main() {
         default:
             cout << "Not a Valid Choice. \n"
                  << "Choose again.\n";
+                 //main();
             break;
     }
-}
+    return "Just follow the guidelines";
 
-string getName(){
-    string firstName;
-    string lastName;
-    cout << "Please enter your full name: ";
-    getline (cin,  firsntName);
-    cin >> firstName << lname; 
+
+}
+//*********************Quit*********************//
+string quit(){
+    cout << endl;
     
-    fname, lname = solitName(fullName); 
-  
-    cout << "Thank you "<< firstName<<" Welcome to our JunkuLator Adventures!!!"<< endl;
-
-    return firstName;
-
-
-
-//    string name;
-//    cout << "Please enter your full name: ";
-//    cin >> name;
-//    cout << "Thank you "<< name<<" Welcome to our JunkuLator Adventures!!!"<< endl;
-//    return firstName;
-
+    return "Thank you for using the JunuLator!\n This is the end of the program.\n";
 }
 
-char getChoice(){
-    char choice;
-    printMenu();
+//*********************Metric Conversion*********************//
+void printMenuForMetricConversion();
+int getChoiceForMetricConversion(){
+    int choice;
+    printMenuForMetricConversion();
     cin >> choice;
+    choice = validationOnNumbers(choice);
     return choice;
-
-
-//    if(choice=="Help"){
-//        choice="H";
-//    }
-
-//    choice=choice.c_str();
-//    return choice;
 }
 
-void printMenu(){
-        cout << "\n";
-        cout << "Please select from the following menu: \n";
-        cout << "   1. Math Calculator\n" ;
-        cout << "   2. Metric Conversion Calculator\n";
-        cout << "   3. Grades Calculator \n";
-        cout << "   4. String Tokenizer\n";
-        cout << "   5. Help (display help message/s)\n";
-        cout << "   6. Quit (terminates the program)\n";
-        cout << "Enter your choice and press return: ";
+float fromMilesToKilometers() {
+    //Miles to KM
+    float miles;
+    cout << "Please enter your miles value: ";
+    cin >> miles;
+    miles = validationOnNumbers(miles);
+    float kilometers = miles * 1.60934;
+    cout <<"Your answer is " << std::setprecision(4) << kilometers << " Kilometers";
+    return kilometers;
 }
 
-int mathCalculator() {
-    int firstOperand;
-    int secondOperand;
-    int result;
+float fromKilometersToMiles(){
+    //KM to Miles
+    float kilometers;
     cout << "\n";
-    cout << "Please enter operation (+, - , *, /, %, Log2(n), Help): ";
-    string choice;
-    cin >> choice;
-
-    if (choice == "+") {
-        cout << "Enter your first Operand: ";
-        cin >> firstOperand;
-        cout << "Enter your second Operand: ";
-        cin >> secondOperand;
-        result = firstOperand + secondOperand;
-        cout << firstOperand << " " << "+" << " " << secondOperand  << " " << "="   << " "<< result;
-        return result;
-
-    } else if (choice == "-") {
-        cout << "Enter your first Operand: ";
-        cin >> firstOperand;
-        cout << "Enter your second Operand: ";
-        cin >> secondOperand;
-        result = firstOperand - secondOperand;
-        cout << firstOperand << " " << "-" << " " << secondOperand  << " " << "="   << " "<< result;
-        return result;
-
-    } else if (choice == "*") {
-        cout << "Enter your first Operand: ";
-        cin >> firstOperand;
-        cout << "Enter your second Operand: ";
-        cin >> secondOperand;
-        result = firstOperand * secondOperand;
-        cout << firstOperand << " " << "*" << " " << secondOperand  << " " << "="   << " "<< result;
-        return result;
-
-    } else if (choice == "/") {
-        cout << "Enter your first Operand: ";
-        cin >> firstOperand;
-        cout << "Enter your second Operand: ";
-        cin >> secondOperand;
-        result = firstOperand / secondOperand;
-        cout << firstOperand << " " << "/" << " " << secondOperand  << " " << "="   << " "<< result;
-        return result;
-
-    } else if (choice == "%") {
-        cout << "Enter your first Operand: ";
-        cin >> firstOperand;
-        cout << "Enter your second Operand: ";
-        cin >> secondOperand;
-        result = firstOperand % secondOperand;
-        cout << firstOperand % 10 << " " << "%" << " " << secondOperand  << " " << "="   << " "<< result;
-        return result;
-
-    } else if (choice == "log2") {
-        cout << "Enter your first Operand: ";
-        float firstOperand;
-        cin >> firstOperand;
-        result = log2(firstOperand);
-        cout << "log2(" << firstOperand << ") = " << result << endl;
-
-
-    } else if (choice == "Help") {
-        cout << "You should one of these operand (+, - , *, /, %, Log2(n)) ";
-        mathCalculator();
-
-    } else {
-        cout << "ERROR! Try another operand!\n";
-        mathCalculator();
-    }
+    cout << "Please enter your kilometers value: ";
+    cin >> kilometers;
+    kilometers = validationOnNumbers(kilometers);
+    float miles = kilometers * 0.62137;
+    cout <<"Your answer is " << std::setprecision(4) << miles << " miles";
+    return miles;
+    
 }
-int getOperands();
 
-float fromCentimetresToInches();
-float fromInchesToCentimetres();
-float fromPoundsToKilograms();
-float fromKilogramsToPounds();
-int getChoiceForMetricConversion();
-float fromKilometersToMiles();
-float fromMilesToKilometers();
+float fromKilogramsToPounds(){
+    //Kg to pounds
+    float kilogram;
+    cout << "\n";
+    cout << "Please enter your kilograms value: ";
+    cin >> kilogram;
+    kilogram = validationOnNumbers(kilogram);
+    float pounds  = kilogram * 2.20462;
+    cout <<"Your answer is " << std::setprecision(4) << pounds << " pounds";
+    return pounds;
+}
+
+float fromPoundsToKilograms(){
+    //pounds to kg
+    float pounds;
+    cout << "\n";
+    cout << "Please enter your pounds value: ";
+    cin >> pounds;
+    pounds = validationOnNumbers(pounds);
+    float kilogram  = pounds * 0.45359237;
+    cout <<"Your answer is " << std::setprecision(4) << kilogram << " kilogram";
+    return kilogram;
+}
+
+
+
+
+float fromInchesToCentimetres(){
+    //inches to cm
+    float inches;
+    cout << "\n";
+    cout << "Please enter your inches value: ";
+    cin >> inches;
+    inches = validationOnNumbers(inches);
+    float centimetres  =  inches * 2.54;
+    cout <<"Your answer is " << std::setprecision(4) <<  centimetres << " centimetres";
+    return centimetres;
+}
+
+float fromCentimetresToInches(){
+    //cm to inches
+    float centimetres;
+    cout << "\n";
+    cout << "Please enter your centimetres value: ";
+    cin >> centimetres;
+    centimetres = validationOnNumbers(centimetres);
+    float inches  =  centimetres / 2.54;
+    cout <<"Your answer is " << std::setprecision(4) << inches << " inches";
+    return inches;
+}
+
+void printMenuForMetricConversion(){
+    cout << "\n";
+    cout << "Please select from the following menu: \n";
+    cout << "1. Change from Kilometers to Miles.\n";
+    cout << "2. Change form Miles to Kilometers.\n";
+    cout << "3. Change from Kilograms(Kg) to pounds.\n";
+    cout << "4. Change from pounds to Kilograms(Kg).\n";
+    cout << "5. Change from inches to cm.\n";
+    cout << "6. Change from centimetres to inches.\n";
+    cout << "Enter your choice and press return: ";
+}
+
 float metricConversion() {
     int choice = getChoiceForMetricConversion();
     switch(choice) {
@@ -228,228 +518,14 @@ float metricConversion() {
         default:
             cout << "Not a Valid Choice. \n"
                  << "Choose again.\n";
+                 metricConversion();
             break;
     }
-
-}
-string inputText(){
-    string textEntered;
-    cout << "Enter a text: ";
-    cin >> textEntered;
-    return textEntered;
-}
-int getNumOfLetters(string text){
-
-
-    //count the number of letters of parameter and return int counter = 0;
-    int counter = 0;
-
-    //count the number of space
-    for (int i =0; i<text.length(); i++){
-        if (text.at(i) == ' '){
-            counter++;
-        }
-    }
-
-    return text.length() - counter;
-}
-
-int getNumberOfWords(string text){
-    int counter = 0;
-    for (int i=0; i<text.length(); i++){
-        if (text.at(i) == ' '){
-            counter++;
-        }
-    }
-
-    return ++counter;
-}
-
-string getReversedText(string text){
-    //reverse parameter text and return
-
-    string reversed = text;
-    reverse(reversed.begin(), reversed.end());
-    return reversed;
-}
-
-void printCapitalWord(int size,  string text){
-    string textArray[size];
-    string temp;
-    int index = 0;
-
-    //convert each word to array
-    stringstream ssin(text);
-    while(ssin.good() && index < size){
-        ssin >> textArray[index];
-        ++index;
-    }
-
-    cout << "All the words starting with capital letter is: " << endl;
-
-    //check each word if starting with capital letter and print and count the number of it
-    int counter = 0;
-    for (int i=0; i<size; i++){
-        if (textArray[i].at(0) >= 65 && textArray[i].at(0) <= 90){
-            cout << textArray[i] << endl;
-            ++counter;
-        }
-    }
-
-    //if count of words starting with capital letter is 0, print not found
-    if (counter == 0){
-        cout << "not found" << endl;
-    }
-}
-
-
-
-void findWord(string text, int size){
-    //look for word user wants to check and tell the result
-
-    string textArray [size];
-    string temp;
-    int index=0;
-
-    //convert text to array having each word as an element
-    stringstream ssin(text);
-    while (ssin.good() && index<size) {
-        ssin >> textArray[index];
-        ++index;
-    }
-
-    //ask a word user looks for
-    string wordInput;
-    bool found=false;
-    cout << "Enter the word you want to find: ";
-    cin >> wordInput;
-
-    //see each element if matches the word user entered
-    for (int i=0; i<sizeof(textArray); i++){
-        if (textArray[i] == wordInput) {
-            found = true;
-        }
-
-    }
-
-    //print the result
-    if (found == true){
-        cout << "The word you are looking for is found." << endl;
-    }
-    else {
-        cout << "The word you are looking for is NOT found." << endl;
-    }
-
-}
-
-
-string help(){
-
-    cout << "You have to chose any option from 1-6\n";
-    cout << "The first option is a math calculator\n";
-    cout << "The second option is a metric conversion\n";
-    cout << "The third option is a grade calculator\n";
-    cout << "The fourth option is a string tokenizer\n";
-    cout << "The sixth option is to quit the program\n";
-    main();
-}
-string quit(){
-    cout << "Thank you for using the JunuLator!\n";
-    cout << "This is the end of the program.\n";
-}
-
-
-
-
-
-
-
-void printMenuForMetricConversion();
-int getChoiceForMetricConversion(){
-    int choice;
-    printMenuForMetricConversion();
-    cin >> choice;
     return choice;
 }
 
-float fromMilesToKilometers() {
-    //Miles to KM
-    float miles;
-    cout << "Please enter your miles value: ";
-    cin >> miles;
-    float kilometers = miles * 1.60934;
-    cout <<"Your answer is " << std::setprecision(4) << kilometers << " Kilometers";
-    return kilometers;
-}
 
-float fromKilometersToMiles(){
-    //KM to Miles
-    float kilometers;
-    cout << "\n";
-    cout << "Please enter your kilometers value: ";
-    cin >> kilometers;
-    float miles = kilometers * 0.62137;
-    cout <<"Your answer is " << std::setprecision(4) << miles << " miles";
-    return miles;
-}
-
-float fromKilogramsToPounds(){
-    //Kg to pounds
-    float kilogram;
-    cout << "\n";
-    cout << "Please enter your kilograms value: ";
-    cin >> kilogram;
-    float pounds  = kilogram * 2.20462;
-    cout <<"Your answer is " << std::setprecision(4) << pounds << " pounds";
-    return pounds;
-}
-
-float fromPoundsToKilograms(){
-    //pounds to kg
-    float pounds;
-    cout << "\n";
-    cout << "Please enter your pounds value: ";
-    cin >> pounds;
-    float kilogram  = pounds / 2.20462;
-    cout <<"Your answer is " << std::setprecision(4) << kilogram << " kilogram";
-    return kilogram;
-}
-
-float fromInchesToCentimetres(){
-    //inches to cm
-    float inches;
-    cout << "\n";
-    cout << "Please enter your inches value: ";
-    cin >> inches;
-    float centimetres  =  inches * 2.54;
-    cout <<"Your answer is " << std::setprecision(4) <<  centimetres << " centimetres";
-    return centimetres;
-}
-
-float fromCentimetresToInches(){
-    //cm to inches
-    float centimetres;
-    cout << "\n";
-    cout << "Please enter your centimetres value: ";
-    cin >> centimetres;
-    float inches  =  centimetres / 2.54;
-    cout <<"Your answer is " << std::setprecision(4) << inches << " inches";
-    return inches;
-}
-
-void printMenuForMetricConversion(){
-    cout << "\n";
-    cout << "Please select from the following menu: \n";
-    cout << "1. Change from Kilometers to Miles.\n";
-    cout << "2. Change form Miles to Kilometers.\n";
-    cout << "3. Change from Kilograms(Kg) to pounds.\n";
-    cout << "4. Change from pounds to Kilograms(Kg).\n";
-    cout << "5. Change from inches to cm.\n";
-    cout << "6. Change from centimetres to inches.\n";
-    cout << "Enter your choice and press return: ";
-}
-
-
+//*********************Grades Calculator*********************//
 string gradesCalculator(){
     double Grade1;
     double Grade2;
@@ -463,6 +539,7 @@ string gradesCalculator(){
 
     cout << "Enter the number of students in class : "; // Request amount of students for loop from user.
     cin >> Students; // Store user entered value of students.
+    Students = validationOnNumbers(Students);
 
 
 
@@ -474,6 +551,7 @@ string gradesCalculator(){
         cout << "Please enter three numeric grades for student number " << StudentNumber << ". \n"; // requesting grades imput from user.
         cout << "Please enter their first grade: ";
         cin >> Grade1; // Placing users first grade value to Grade1.
+        Grade1 = validationOnNumbers(Grade1);
         if (Grade1 > 100 || Grade1 < 0){
             cout << "\n";
             cout << "Invalid number! Grade should be less than 100!\n";
@@ -484,6 +562,7 @@ string gradesCalculator(){
         }
         cout << "Please enter their second grade: ";
         cin >> Grade2; // Placing users second grade value to Grade2.
+        Grade2 = validationOnNumbers(Grade2);
         if (Grade2 > 100 || Grade2 < 0){
             cout << "\n";
             cout << "Invalid number! Grade should be less than 100!\n";
@@ -494,6 +573,7 @@ string gradesCalculator(){
         }
         cout << "Please enter their third grade: ";
         cin >> Grade3; // Placing users third grade value to Grade3.
+        Grade3 = validationOnNumbers(Grade3);
         if (Grade3 > 100 || Grade3 < 0){
             cout << "\n";
             cout << "Invalid number! Grade should be less than 100!\n";
@@ -527,33 +607,61 @@ string gradesCalculator(){
             cout << " letter grade: F.\n";
         cout << "\n"; // Adds new line between data to improve readability of program.
     }
-
+    
     cout << "The class average: " << AverageTotal / (StudentNumber * 3) << "\n" ; // displays total class average based on running total and about of studends.
-
+    return "Thank you for using grades calculator";
 }
 
-string stringTokenizer() {
-    //operate functions to handle a to f
 
-    //get text from user
-    string textEntered = askString();
+//*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=MAIN*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+int main() {
 
-    //pass text user entered and get calculated the number of letters of the text and print
-    int numberOfLetters = getNumOfLetters(textEntered);
-    cout << "The total number of letters in the line is: " << numberOfLetters << endl;
+    getName();
 
-    //pass text user entered and calculate the number of words of the text and print
-    int numberOfWords = getNumberOfWords (textEntered);
-    cout << "The total number of words in the line is: " << numberOfWords << endl;
+    char choice = getChoice();
 
-    //pass text user entered and make it reversed and print
-    string reversedText = getReversedText (textEntered);
-    cout << "This is what you entered backwards: " << endl;
-    cout << reversedText << endl << endl;
+    switch(choice) {
+        case '1':
+            mathCalculator();
+            break;
+        case '2':
+            metricConversion();
+            break;
+        case '3':
+            gradesCalculator();
+            break;
+        case '4':
+            stringTokenizer();
+            break;
+        case '5':
+            help();
+            break;
+        case '6':
+            quit();
+            break;
+        case 'q':
+            quit();
+            break;
+        case 'Q':
+            quit();
+            break;
+        case 'h':
+            help();
 
-    //pass the number of words in the text and the text and find words starting with capital letter and print
-    printCapitalWord(numberofWords(), textEntered);
-
-    //pass the number of words in the text and text and find words that user is looking for and print findword(textentered, numberofWords) ;
-    findWord(textEntered, numberofWords()) ;
+            break;
+        case 'H':
+            help();
+            break;
+        default:
+            cout << "Not a Valid Choice. \n"
+                 << "Choose again.\n";
+                main();
+            break;
+    }
 }
+
+
+
+
+
+
