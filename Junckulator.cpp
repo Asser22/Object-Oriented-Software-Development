@@ -10,7 +10,7 @@
 #include <iomanip> // std::setprecision
 #include <sstream>
 #include <string.h>
-#include <bits/stdc++.h>
+
 
 using namespace std;
 
@@ -25,10 +25,26 @@ string help();
 string quit();
 
 
+bool isLetter(string name)
+{
+	for(int i = 0; i < name.length(); i++)
+	{
+		if( name[i] >= '0' && name[i] <= '9'){ 
+            cout << "Your name must be alphabetical characters only!\n";
+			cout << "Program terminating please start over." << endl;
+            return false;
+        }
+		else{
+			return true;
+		}
+
+		
+	}
+    return false;
+}
 
 double validationOnNumbers(double number)
 {
-    cin >> number;
     //if the user fails to put in a number, ask the user to re-do it
     while(cin.fail()) {
         cout << "Error! Please enter a number!" << endl;
@@ -37,44 +53,24 @@ double validationOnNumbers(double number)
         cout << "Please Reenter the number: ";
         cin >> number;
     }
-    return number;
+    return number;//return the valid number
 }
-
-//boolean funtion to check if the user input is a string or not
-bool validateOperations(const string& userInput)
-{
-    for (const char characters : userInput) {
-        if (userInput == "+" || userInput == "-" || userInput == "*" || userInput == "/" || userInput == "%" || 
-            userInput == "log2" || userInput == "Log2" || userInput == "LOG2" || userInput == "help" || userInput == "Help" ||
-            userInput == "HELP")
-            return true;
-    }
-    return false;
-}
-
-string validateString(string userInput) {
-    getline(cin, userInput);
-    while (validateOperations(userInput) == false)
-    {
-        cout << "Error! Enter the correct choice!\n";
-        cin.clear();
-        cout << "Please enter your choice again: ";
-        getline(cin, userInput);
-    }
-    return userInput;
-}
-
 
 
 string getName(){
-    
     string name;
     string last;
-    cout << "Please enter your full name: ";
+    cout << "Please enter your FULL name: ";
     cin>>name;
     cin.get();
     getline(cin, last);
-    cout << "Thank you "<< name<<" Welcome to our JunkuLator Adventures!!!"<< endl;
+    if (isLetter(last) && isLetter(name)){
+        cout << "Thank you "<< name<<" Welcome to our JunkuLator Adventures!!!"<< endl;
+    }
+    else{
+        getName();
+    }
+    
     
     return name;
 }
@@ -127,12 +123,11 @@ int mathCalculator() {
     cout << "Please enter operation (+, - , *, /, %, Log2(n), Help): ";
     string choice;
     cin >> choice;
-    choice = validateString(choice);
 
     if (choice == "+") {
         cout << "Enter your first Operand: ";
         cin >> firstOperand;
-        firstOperand = validationOnNumbers(firstOperand);
+        //firstOperand = validationOnNumbers(firstOperand);
         cout << "Enter your second Operand: ";
         cin >> secondOperand;
         secondOperand = validationOnNumbers(secondOperand);
@@ -345,12 +340,13 @@ void stringTokenizer()
 //*********************Help*********************//
 string help(){
 
-    cout << "You have to chose any option from 1-6\n";
-    cout << "The first option is a math calculator\n";
-    cout << "The second option is a metric conversion\n";
-    cout << "The third option is a grade calculator\n";
-    cout << "The fourth option is a string tokenizer\n";
-    cout << "The sixth option is to quit the program\n";
+    
+    cout << "\nYou have to chose any option from 1-6\n";
+    cout << "  The first option is a math calculator\n";
+    cout << "  The second option is a metric conversion\n";
+    cout << "  The third option is a grade calculator\n";
+    cout << "  The fourth option is a string tokenizer\n";
+    cout << "  The sixth option is to quit the program\n";
     char choice = getChoice();
     switch(choice) {
         case '1':
