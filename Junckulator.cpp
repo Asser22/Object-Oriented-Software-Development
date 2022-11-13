@@ -67,12 +67,15 @@ string validateString(string userInput) {
 
 
 string getName(){
-
+    
     string name;
-
+    string last;
     cout << "Please enter your full name: ";
-    //getline (cin,  name);
+    cin>>name;
+    cin.get();
+    getline(cin, last);
     cout << "Thank you "<< name<<" Welcome to our JunkuLator Adventures!!!"<< endl;
+    
     return name;
 }
 
